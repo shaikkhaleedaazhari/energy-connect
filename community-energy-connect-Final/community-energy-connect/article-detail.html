@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Detail - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .article-detail-container {
+            padding: 120px 0 60px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .article-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .article-header {
+            padding: 40px 40px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .article-category {
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .article-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .article-date i {
+            color: #94a3b8;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .article-hero {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .article-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 40px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            color: #1e293b;
+            margin: 2rem 0 1rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.4rem;
+            color: #1e293b;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .article-tags {
+            padding: 20px 40px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .share-btn.facebook { background: #1877f2; }
+        .share-btn.twitter { background: #1da1f2; }
+        .share-btn.linkedin { background: #0a66c2; }
+
+        .related-articles {
+            padding: 60px 0;
+            background: #f8fafc;
+        }
+
+        .related-articles h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 40px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .related-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .related-content {
+            padding: 20px;
+        }
+
+        .related-content h3 {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .related-content p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .read-more {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .article-detail-container {
+                padding: 100px 0 40px;
+            }
+
+            .article-wrapper {
+                border-radius: 0;
+            }
+
+            .article-header {
+                padding: 30px 20px 15px;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-hero {
+                height: 300px;
+            }
+
+            .article-content {
+                padding: 30px 20px;
+                font-size: 1rem;
+            }
+
+            .article-tags {
+                padding: 15px 20px;
+            }
+
+            .article-actions {
+                padding: 15px 20px;
+            }
+
+            .related-articles {
+                padding: 40px 0;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link active">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Content -->
+    <div class="article-detail-container">
+        <div class="article-wrapper">
+            <div class="article-header">
+                <div class="article-meta">
+                    <span class="article-category" id="articleCategory">Category</span>
+                    <span class="article-date">
+                        <i class="far fa-calendar"></i>
+                        Published on March 15, 2024
+                    </span>
+                </div>
+                <h1 class="article-title" id="articleTitle">Loading...</h1>
+            </div>
+            
+            <div class="article-hero">
+                <img id="articleImage" src="/placeholder.svg" alt="Article Image">
+            </div>
+            
+            <div class="article-content" id="articleContent">
+                <p>Loading article content...</p>
+            </div>
+            
+            <div class="article-tags">
+                <span class="tag">Energy Efficiency</span>
+                <span class="tag">DIY</span>
+                <span class="tag">Home Improvement</span>
+            </div>
+
+            <div class="article-actions">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="share-btn twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="share-btn linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Articles Section -->
+        <div class="related-articles">
+            <!-- <h2>Related Articles</h2> -->
+            <!-- <div class="related-grid">
+                <div class="related-card">
+                    <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80" alt="Related Article">
+                    <div class="related-content">
+                        <h3>Understanding Solar Panel Efficiency</h3>
+                        <p>Learn about the factors that affect solar panel performance and how to maximize your system's output.</p>
+                        <a href="#" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="related-card">
+                    <img src="https://images.unsplash.com/photo-1559302505-4d32521e4f3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80" alt="Related Article">
+                    <div class="related-content">
+                        <h3>Energy-Saving Tips for Homeowners</h3>
+                        <p>Discover practical ways to reduce your energy consumption and lower your utility bills.</p>
+                        <a href="#" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="related-card">
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80" alt="Related Article">
+                    <div class="related-content">
+                        <h3>The Future of Renewable Energy</h3>
+                        <p>Explore emerging technologies and trends shaping the future of sustainable energy.</p>
+                        <a href="#" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Load article details when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadArticleDetails();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-header">
+                <div class="profile-header-content">
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar-large">
+                            <span class="avatar-icon">👤</span>
+                        </div>
+                        <h1>User Profile</h1>
+                        <p>Manage your account settings and preferences</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-content-grid">
+                <!-- Account Information Card -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h2>Account Information</h2>
+                        <span class="card-icon">👤</span>
+                    </div>
+                    <form id="profileForm" class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Security Settings Card -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h2>Security Settings</h2>
+                        <span class="card-icon">🔒</span>
+                    </div>
+                    <form id="passwordChangeForm" class="profile-form">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="current_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="new_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirm_password" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-secondary">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Account Activity Card -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h2>Account Activity</h2>
+                        <span class="card-icon">📊</span>
+                    </div>
+                    <div class="activity-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Services Booked</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Products Purchased</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Reviews Written</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Card -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h2>Preferences</h2>
+                        <span class="card-icon">⚙️</span>
+                    </div>
+                    <div class="preferences-content">
+                        <div class="preference-item">
+                            <label class="preference-label">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                Email notifications for new services
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <label class="preference-label">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                SMS notifications for bookings
+                            </label>
+                        </div>
+                        <div class="preference-item">
+                            <label class="preference-label">
+                                <input type="checkbox">
+                                <span class="checkmark"></span>
+                                Marketing emails
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Load user profile data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+        });
+
+        function loadUserProfile() {
+            fetch('php/get-profile.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.profile) {
+                        // Populate form fields with user data
+                        document.getElementById('firstName').value = data.profile.first_name || '';
+                        document.getElementById('lastName').value = data.profile.last_name || '';
+                        document.getElementById('email').value = data.profile.email || '';
+                        document.getElementById('phone').value = data.profile.phone_number || '';
+                    } else {
+                        alert('Error loading profile: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error loading profile data');
+                });
+        }
+
+        // Handle profile update form
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('php/update-profile.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Profile updated successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating profile');
+            });
+        });
+
+        // Handle password change form
+        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const newPassword = formData.get('new_password');
+            const confirmPassword = formData.get('confirm_password');
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match!');
+                return;
+            }
+            
+            fetch('php/change-password.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Password changed successfully!');
+                    this.reset();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while changing password');
+            });
+        });
+    </script>
+</body>
+</html>

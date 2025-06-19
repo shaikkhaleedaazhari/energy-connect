@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Sign Up - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Provider Sign Up Form -->
+    <div class="form-container">
+        <h1>Sign Up</h1>
+        <h2 class="subtitle">Service Provider</h2>
+        
+        <form id="providerSignupForm" onsubmit="handleProviderSignup(event)">
+            <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" id="companyName" name="company_name" placeholder="Enter your company name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="contactName">Contact Name</label>
+                <input type="text" id="contactName" name="contact_name" placeholder="Enter your contact name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phone_number" placeholder="Enter your phone number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit" class="form-submit">Sign Up as Provider</button>
+        </form>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

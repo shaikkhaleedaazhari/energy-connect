@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Resources - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link active">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <!-- Will be populated by JavaScript based on login status -->
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Education Header -->
+    <section class="education-header">
+        <div class="container">
+            <h1>Educational Resources</h1>
+            <p>Explore our comprehensive library of resources to learn about renewable energy and energy efficiency.</p>
+        </div>
+    </section>
+
+    <!-- Workshops & Seminars -->
+    <section class="workshops-section">
+        <div class="container">
+            <h2>Workshops & Seminars</h2>
+            <div class="workshops-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Register</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Solar Energy Basics</td>
+                            <td>2024-03-15</td>
+                            <td>10:00 AM</td>
+                            <td>Community Center</td>
+                            <td><button class="register-btn" onclick="registerWorkshop(1)">Register</button></td>
+                        </tr>
+                        <tr>
+                            <td>Home Energy Audits</td>
+                            <td>2024-03-22</td>
+                            <td>2:00 PM</td>
+                            <td>Online</td>
+                            <td><button class="register-btn" onclick="registerWorkshop(2)">Register</button></td>
+                        </tr>
+                        <tr>
+                            <td>Wind Power Fundamentals</td>
+                            <td>2024-03-29</td>
+                            <td>11:00 AM</td>
+                            <td>Library</td>
+                            <td><button class="register-btn" onclick="registerWorkshop(3)">Register</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIY Guides & Articles -->
+    <section class="articles-section" style="padding: 60px 0; background-color: #f8f9fa;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.2rem; font-weight: 700; margin-bottom: 2rem; color: #2c3e50;">DIY Guides & Articles</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #555; max-width: 800px; margin: 0 auto 3rem auto; line-height: 1.6;">
+                Explore our comprehensive collection of guides and articles to help you implement sustainable energy solutions in your home.
+            </p>
+            <div class="articles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; padding: 0 1rem;">
+                <div class="article-card" onclick="navigateToArticle('insulating-your-home')" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer;">
+                    <img src="https://www.okinsulation.ca/assets/components/phpthumbof/cache/A_Comprehensive_Guide.bd9a9234b8ba5df4c2bdc6b849c95aaa.png" alt="Insulating Your Home" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; color: #2c3e50;">Insulating Your Home</h3>
+                        <p style="color: #666; line-height: 1.5; font-size: 1rem;">A step-by-step guide to improving your home's insulation and energy efficiency.</p>
+                    </div>
+                </div>
+                <div class="article-card" onclick="navigateToArticle('switching-to-led-lighting')" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer;">
+                    <img src="https://images.articlesfactory.com/750x0/eec169f1-13b4-4d98-900a-2e8cbf05293b.webp" alt="LED Lighting" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; color: #2c3e50;">Switching to LED Lighting</h3>
+                        <p style="color: #666; line-height: 1.5; font-size: 1rem;">Learn about the benefits of LED lighting and how to implement them in your space.</p>
+                    </div>
+                </div>
+                <div class="article-card" onclick="navigateToArticle('understanding-solar-panels')" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80" alt="Solar Panels" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; color: #2c3e50;">Understanding Solar Panels</h3>
+                        <p style="color: #666; line-height: 1.5; font-size: 1rem;">An in-depth overview of solar panel technology and its practical applications.</p>
+                    </div>
+                </div>
+                <div class="article-card" onclick="navigateToArticle('water-conservation-tips')" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer;">
+                    <img src="https://delf2iyv2crlj.cloudfront.net/Images/Water%20Conservation%20in%20Residential%20Properties-%20Tips%20and%20Strategies%20for%20Sustainable%20Water%20Usage81070187-02a6-4dd1-8b85-dd0d63520cbf.webp" alt="Water Conservation" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; color: #2c3e50;">Water Conservation Tips</h3>
+                        <p style="color: #666; line-height: 1.5; font-size: 1rem;">Practical strategies for reducing water usage and optimizing your consumption.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <!-- Will be populated by JavaScript based on login status -->
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Connect with Local Renewable Energy Solutions</h1>
+            <p>Empowering communities to transition to sustainable energy through education, resources, and connections to local providers.</p>
+            <a href="services.html" class="btn-primary">Explore Services</a>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-icon">🔎</div>
+                    <h3>Browse & Discover</h3>
+                    <p>Explore a wide range of renewable energy products and services tailored for your needs.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-icon">📝</div>
+                    <h3>Book & Connect</h3>
+                    <p>Contact providers, book services, or purchase products directly through our platform.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-icon">🌱</div>
+                    <h3>Track Your Impact</h3>
+                    <p>Monitor your energy savings and environmental impact as you go green.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Products & Services Info Section -->
+    <section class="explore-section">
+        <div class="container" style="text-align:center; padding: 60px 0 40px 0;">
+            <h2 style="font-size:2.2rem; font-weight:700; margin-bottom:1.2rem;">Discover Our Products & Services</h2>
+            <p style="font-size:1.15rem; color:#555; max-width:700px; margin:0 auto 2.2rem auto;">
+                At Community Energy Connect, we offer a curated selection of innovative renewable energy products and expert services to help you power your home or business sustainably. Whether you're looking for solar panels, smart meters, or professional energy audits and installations, our platform connects you with trusted providers and the latest solutions for a greener future.
+            </p>
+            <div style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; margin-top:2.5rem;">
+                <a href="products.html" class="btn-primary" style="min-width:180px; font-size:1.1rem;">Explore Products</a>
+                <a href="services.html" class="btn-secondary" style="min-width:180px; font-size:1.1rem;">Explore Services</a>
+        </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="container">
+            <h2>Why Choose Us?</h2>
+            <div class="why-grid">
+                <div class="why-item">
+                    <div class="why-icon">💡</div>
+                    <h3>100+ Products</h3>
+                    <p>Wide selection of renewable energy solutions for every home and business.</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">🤝</div>
+                    <h3>50+ Providers</h3>
+                    <p>Trusted local providers ready to help you transition to clean energy.</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">⭐</div>
+                    <h3>4.8/5 Avg. Rating</h3>
+                    <p>Our community loves the quality and service they receive.</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">🌍</div>
+                    <h3>Community Impact</h3>
+                    <p>Join a movement making a real difference for the planet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Workshops -->
+    <section class="workshops">
+        <div class="container">
+            <h2>Upcoming Workshops & Events</h2>
+            <div class="workshop-item">
+                <div class="workshop-content">
+                    <h3>Renewable Energy 101</h3>
+                    <p>Learn the basics of renewable energy sources and their benefits.</p>
+                    <button class="btn-secondary" onclick="registerWorkshop(1)">Register</button>
+                </div>
+                <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=150&q=80" alt="Wind turbines">
+            </div>
+            <div class="workshop-item">
+                <div class="workshop-content">
+                    <h3>Energy Efficiency Workshop</h3>
+                    <p>Discover practical tips to improve your home's energy efficiency.</p>
+                    <button class="btn-secondary" onclick="registerWorkshop(2)">Register</button>
+                </div>
+                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=150&q=80" alt="Modern house">
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Join Our Community</h2>
+            <p>Stay updated on the latest news, events, and resources.</p>
+            <button class="btn-primary">Sign Up for Newsletter</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

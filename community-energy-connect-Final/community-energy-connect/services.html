@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link active">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="products-page-layout">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <h2>Filter Services</h2>
+            <div class="filter-group">
+                <h3>Category</h3>
+                <div class="filter-select-wrapper">
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Solar Energy Services">Solar Energy Services</option>
+                        <option value="Energy Efficiency Services">Energy Efficiency Services</option>
+                        <option value="Educational Workshops">Educational Workshops</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <div class="filter-select-wrapper">
+                    <select class="filter-select" id="priceFilter">
+                        <option value="">All Prices</option>
+                        <option value="0-1000">$0 - $1,000</option>
+                        <option value="1000-5000">$1,000 - $5,000</option>
+                        <option value="5000+">$5,000+</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="filter-group">
+                <h3>Availability</h3>
+                <div class="filter-select-wrapper">
+                    <select class="filter-select" id="availabilityFilter">
+                        <option value="">All</option>
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+            </div> -->
+            <button class="apply-filters-btn" id="applyFilters">Apply Filters</button>
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header" style="margin-top:2.5rem; text-align:center;">
+                <h1 style="display:inline-flex; align-items:center; gap:10px; justify-content:center;">
+                  Our Services
+                  <span id="servicesStatusIcon"></span>
+                </h1>
+            </div>
+            <!-- Services Grid -->
+            <div class="products-grid" id="servicesGrid">
+                <!-- Services will be dynamically loaded here -->
+            </div>
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading services...</p>
+            </div>
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <p>Error loading services. Please try again later.</p>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/services.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
