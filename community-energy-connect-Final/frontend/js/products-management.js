@@ -1,35 +1,38 @@
+// Backend container DNS name on Docker network
+const API_BASE_URL = "http://backend";
+
 // Products Management functionality
 document.addEventListener("DOMContentLoaded", () => {
-  loadProducts()
-  loadProviderName()
-})
+  loadProducts();
+  loadProviderName();
+});
 
 // Load products
 function loadProducts() {
-  fetch("php/get-provider-products.php")
+  fetch(`${API_BASE_URL}/php/get-provider-products.php`)
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        displayProducts(data.products)
+        displayProducts(data.products);
       } else {
-        console.error("Error loading products:", data.message)
-        document.getElementById("productsTableBody").innerHTML = 
-          '<tr><td colspan="4" class="text-center">No products found</td></tr>'
+        console.error("Error loading products:", data.message);
+        document.getElementById("productsTableBody").innerHTML =
+          '<tr><td colspan="4" class="text-center">No products found</td></tr>';
       }
     })
     .catch((error) => {
-      console.error("Error loading products:", error)
-      document.getElementById("productsTableBody").innerHTML = 
-        '<tr><td colspan="4" class="text-center">Error loading products</td></tr>'
-    })
+      console.error("Error loading products:", error);
+      document.getElementById("productsTableBody").innerHTML =
+        '<tr><td colspan="4" class="text-center">Error loading products</td></tr>';
+    });
 }
 
 // Display products in table
 function displayProducts(products) {
-  const tbody = document.getElementById("productsTableBody")
+  const tbody = document.getElementById("productsTableBody");
   if (!products || products.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" class="text-center">No products found</td></tr>'
-    return
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center">No products found</td></tr>';
+    return;
   }
 
   tbody.innerHTML = products.map(product => `
@@ -56,63 +59,64 @@ function displayProducts(products) {
         </div>
       </td>
     </tr>
-  `).join('')
+  `).join('');
 }
 
 // Edit product
 function editProduct(id) {
-  window.location.href = `edit-product.html?id=${id}`
+  window.location.href = `edit-product.html?id=${id}`;
 }
 
 // View product
 function viewProduct(id) {
-  window.location.href = `product-detail.html?id=${id}`
+  window.location.href = `product-detail.html?id=${id}`;
 }
 
 // Delete product
 function deleteProduct(id) {
   if (!confirm("Are you sure you want to delete this product?")) {
-    return
+    return;
   }
 
-  const formData = new FormData()
-  formData.append('action', 'delete')
-  formData.append('id', id)
+  const formData = new FormData();
+  formData.append('action', 'delete');
+  formData.append('id', id);
 
-  fetch("php/manage-products.php", {
+  fetch(`${API_BASE_URL}/php/manage-products.php`, {
     method: 'POST',
     body: formData
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        loadProducts() // Reload products after deletion
+        loadProducts(); // Reload products after deletion
       } else {
-        alert(data.message || "Failed to delete product")
+        alert(data.message || "Failed to delete product");
       }
     })
     .catch((error) => {
-      console.error("Error deleting product:", error)
-      alert("Error deleting product")
-    })
+      console.error("Error deleting product:", error);
+      alert("Error deleting product");
+    });
 }
 
 // Load provider name
 function loadProviderName() {
-  fetch("php/get-profile.php")
+  fetch(`${API_BASE_URL}/php/get-profile.php`)
     .then((response) => response.json())
     .then((data) => {
       if (data.success && data.profile) {
-        document.getElementById("providerName").textContent = data.profile.company_name || "Provider"
+        document.getElementById("providerName").textContent = data.profile.company_name || "Provider";
       }
     })
-    .catch((error) => console.error("Error loading provider name:", error))
+    .catch((error) => console.error("Error loading provider name:", error));
 }
 
 // Logout function
 function logout() {
   if (confirm("Are you sure you want to logout?")) {
-    sessionStorage.removeItem("userSession")
-    window.location.href = "index.html"
+    sessionStorage.removeItem("userSession");
+    window.location.href = "index.html";
   }
 }
+

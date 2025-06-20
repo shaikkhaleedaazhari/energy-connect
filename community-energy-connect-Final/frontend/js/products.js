@@ -1,3 +1,6 @@
+// API Base URL (backend container IP or EKS service name)
+const API_BASE_URL = "http://backend";
+
 // DOM Elements
 const productsGrid = document.getElementById('productsGrid');
 const loadingSpinner = document.getElementById('loadingSpinner');
@@ -32,18 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
-    // Category pills click handler
     categoryPills.forEach(pill => {
         pill.addEventListener('click', () => {
             categoryPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             currentFilters.category = pill.dataset.category === 'all' ? '' : pill.dataset.category;
-            categoryFilter.value = currentFilters.category; // Sync with dropdown
+            categoryFilter.value = currentFilters.category;
             loadProducts();
         });
     });
 
-    // Apply filters button click handler
     applyFiltersBtn.addEventListener('click', () => {
         currentFilters.category = categoryFilter.value;
         currentFilters.priceRange = priceFilter.value;
@@ -51,10 +52,8 @@ function setupEventListeners() {
         loadProducts();
     });
 
-    // Individual filter change handlers
     categoryFilter.addEventListener('change', () => {
         currentFilters.category = categoryFilter.value;
-        // Update active pill
         categoryPills.forEach(pill => {
             if (pill.dataset.category === categoryFilter.value || 
                 (categoryFilter.value === '' && pill.dataset.category === 'all')) {
@@ -77,19 +76,16 @@ function setupEventListeners() {
     });
 }
 
-// Functions
 async function loadProducts() {
     try {
         showLoading();
         const queryParams = new URLSearchParams();
-        
-        // Only add non-empty filters to the query
         if (currentFilters.category) queryParams.append('category', currentFilters.category);
         if (currentFilters.priceRange) queryParams.append('priceRange', currentFilters.priceRange);
         if (currentFilters.availability) queryParams.append('availability', currentFilters.availability);
-        
-        const response = await fetch('./php/get-products.php?' + queryParams.toString());
-        
+
+        const response = await fetch(`${API_BASE_URL}/php/get-products.php?` + queryParams.toString());
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -155,18 +151,12 @@ function formatPrice(price) {
 }
 
 function showLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'flex';
-    }
-    if (errorMessage) {
-        errorMessage.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'flex';
+    if (errorMessage) errorMessage.style.display = 'none';
 }
 
 function hideLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'none';
 }
 
 function showError(message = 'Error loading products. Please try again later.') {
@@ -178,7 +168,7 @@ function showError(message = 'Error loading products. Please try again later.') 
 
 async function loadBrands() {
     try {
-        const response = await fetch('./php/get-brands.php');
+        const response = await fetch(`${API_BASE_URL}/php/get-brands.php`);
         if (!response.ok) throw new Error('Failed to load brands');
         
         const data = await response.json();
@@ -228,4 +218,5 @@ function updateProductsStatusIcon(products) {
     } else {
         iconSpan.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;" title="Existing products"></i>';
     }
-} 
+}
+

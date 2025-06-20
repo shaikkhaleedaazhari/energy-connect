@@ -1,3 +1,6 @@
+// Backend container DNS name on Docker network
+const API_BASE_URL = "http://backend";
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get product ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -12,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Fetch product details
-    fetch(`php/get-product-detail.php?id=${productId}`)
+    fetch(`${API_BASE_URL}/php/get-product-detail.php?id=${productId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -105,7 +108,6 @@ function displayProductDetails(product, provider) {
             console.warn('Error parsing specifications:', error);
         }
         if (!Array.isArray(specifications)) specifications = [];
-        console.log('Product specifications:', specifications); // Debug log
         if (specifications.length > 0) {
             specsList.innerHTML = specifications.map(spec => 
                 `<li><i class="fas fa-check"></i> ${spec}</li>`
@@ -126,8 +128,6 @@ function showError(message) {
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.style.display = 'block';
-        
-        // Scroll to error message
         errorElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
         alert(message);
@@ -135,12 +135,10 @@ function showError(message) {
 }
 
 function isProvider() {
-    // Use the auth manager to check if user is a provider
     return authManager && authManager.isProvider();
 }
 
 function setupContactAndWishlistButtons() {
-    // Remove wishlist button if present
     const wishlistBtn = document.querySelector('.wishlist-btn');
     if (wishlistBtn) wishlistBtn.remove();
 }
@@ -151,8 +149,6 @@ function displayProviderContactDetails(provider) {
     
     if (providerInfoCard && providerDetails) {
         providerInfoCard.style.display = 'block';
-        
-        // Create provider details HTML
         providerDetails.innerHTML = `
             <div class="provider-detail-item">
                 <i class="fas fa-building"></i>
@@ -168,4 +164,5 @@ function displayProviderContactDetails(provider) {
             </div>
         `;
     }
-} 
+}
+

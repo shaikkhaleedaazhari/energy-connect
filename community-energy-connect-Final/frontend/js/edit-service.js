@@ -1,3 +1,5 @@
+const API_BASE_URL = "http://backend";
+
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const serviceId = urlParams.get('id');
@@ -8,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load service details
-    fetch(`php/get-service-detail.php?id=${serviceId}`)
+    fetch(`${API_BASE_URL}/php/get-service-detail.php?id=${serviceId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -39,13 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
             category: formData.get('category'),
             subcategory: formData.get('subcategory'),
             pricing: formData.get('price'),
-
             features: JSON.stringify(features),
             image_url: formData.get('image_url')
         };
 
         // Send update request
-        fetch('php/manage-services.php', {
+        fetch(`${API_BASE_URL}/php/manage-services.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -88,4 +89,5 @@ function showError(message) {
     } else {
         alert(message);
     }
-} 
+}
+

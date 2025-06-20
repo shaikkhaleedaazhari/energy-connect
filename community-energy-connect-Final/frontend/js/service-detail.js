@@ -1,15 +1,21 @@
+// Backend container DNS name on Docker network
+const API_BASE_URL = "http://backend";
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get service ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const serviceId = urlParams.get('id');
-
+    let serviceId = urlParams.get('id');
+    // Fallback: try localStorage if not in URL
+    if (!serviceId) {
+        serviceId = localStorage.getItem('selectedService');
+    }
     if (!serviceId) {
         showError('Service ID is required');
         return;
     }
 
     // Fetch service details
-    fetch(`php/get-service-detail.php?id=${serviceId}`)
+    fetch(`${API_BASE_URL}/php/get-service-detail.php?id=${serviceId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -30,10 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function displayServiceDetails(service, provider) {
-    // Update page title
     document.title = `${service.name || service.title} - Community Energy Connect`;
     
-    // Update category badge and breadcrumb
     const categoryElement = document.querySelector('.category');
     if (categoryElement) {
         if (service.category && service.category.trim() !== '') {
@@ -53,13 +57,11 @@ function displayServiceDetails(service, provider) {
         }
     }
 
-    // Update service name
     const nameElement = document.querySelector('h1');
     if (nameElement) {
         nameElement.textContent = service.name || service.title || 'Service Name Not Available';
     }
 
-    // Update service image
     const imageElement = document.querySelector('.service-image');
     if (imageElement) {
         imageElement.src = service.image_url || 'images/default-service.jpg';
@@ -69,20 +71,17 @@ function displayServiceDetails(service, provider) {
         };
     }
 
-    // Update price
     const priceElement = document.querySelector('.price');
     if (priceElement) {
         const price = service.price || service.pricing || 0;
         priceElement.textContent = `Starting at $${parseFloat(price).toFixed(2)}`;
     }
 
-    // Update description
     const descriptionElement = document.querySelector('.description');
     if (descriptionElement) {
         descriptionElement.textContent = service.description || 'No description available';
     }
 
-    // Update features list
     const featuresList = document.querySelector('.features-list');
     if (featuresList) {
         let features = [];
@@ -96,7 +95,6 @@ function displayServiceDetails(service, provider) {
             }
         }
         if (!Array.isArray(features)) features = [];
-        console.log('Service features:', features); // Debug log
         if (features.length > 0) {
             featuresList.innerHTML = features.map(feature => 
                 `<li><i class="fas fa-check"></i> ${feature}</li>`
@@ -106,7 +104,6 @@ function displayServiceDetails(service, provider) {
         }
     }
 
-    // Update provider information if available
     if (provider) {
         displayProviderContactDetails(provider);
     }
@@ -118,8 +115,6 @@ function displayProviderContactDetails(provider) {
     
     if (providerInfoCard && providerDetails) {
         providerInfoCard.style.display = 'block';
-        
-        // Create provider details HTML
         providerDetails.innerHTML = `
             <div class="provider-detail-item">
                 <i class="fas fa-building"></i>
@@ -148,7 +143,7 @@ function showError(message) {
 }
 
 function setupContactAndWishlistButtons() {
-    // Remove wishlist button if present
     const wishlistBtn = document.querySelector('.wishlist-btn');
     if (wishlistBtn) wishlistBtn.remove();
-} 
+}
+

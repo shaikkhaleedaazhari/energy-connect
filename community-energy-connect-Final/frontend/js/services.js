@@ -1,3 +1,6 @@
+// Backend container IP
+const API_BASE_URL = "http://backend";
+
 // DOM Elements
 const servicesGrid = document.getElementById('servicesGrid');
 const loadingSpinner = document.getElementById('loadingSpinner');
@@ -32,18 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
-    // Category pills click handler
     categoryPills.forEach(pill => {
         pill.addEventListener('click', () => {
             categoryPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             currentFilters.category = pill.dataset.category === 'all' ? '' : pill.dataset.category;
-            categoryFilter.value = currentFilters.category; // Sync with dropdown
+            categoryFilter.value = currentFilters.category;
             loadServices();
         });
     });
 
-    // Apply filters button click handler
     if (applyFiltersBtn) {
         applyFiltersBtn.addEventListener('click', () => {
             currentFilters.category = categoryFilter.value;
@@ -53,10 +54,8 @@ function setupEventListeners() {
         });
     }
 
-    // Individual filter change handlers
     categoryFilter.addEventListener('change', () => {
         currentFilters.category = categoryFilter.value;
-        // Update active pill
         categoryPills.forEach(pill => {
             if (pill.dataset.category === categoryFilter.value || 
                 (categoryFilter.value === '' && pill.dataset.category === 'all')) {
@@ -79,7 +78,7 @@ function setupEventListeners() {
     });
 }
 
-// Functions
+// Load services
 async function loadServices() {
     try {
         showLoading();
@@ -87,10 +86,10 @@ async function loadServices() {
         if (currentFilters.category) queryParams.append('category', currentFilters.category);
         if (currentFilters.priceRange) queryParams.append('priceRange', currentFilters.priceRange);
         if (currentFilters.availability) queryParams.append('availability', currentFilters.availability);
-        const response = await fetch('./php/get-services.php?' + queryParams.toString());
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+
+        const response = await fetch(`${API_BASE_URL}/php/get-services.php?` + queryParams.toString());
+        if (!response.ok) throw new Error('Network response was not ok');
+
         const data = await response.json();
         if (data.success) {
             displayServices(data.services);
@@ -132,11 +131,12 @@ function updateServicesStatusIcon(services) {
     }
 }
 
+// Override displayServices to include status icon update
 const origDisplayServices = displayServices;
-displayServices = function(services) {
+displayServices = function (services) {
     origDisplayServices(services);
     updateServicesStatusIcon(services);
-}
+};
 
 function displayServices(services) {
     if (!services || !services.length) {
@@ -170,18 +170,12 @@ function formatPrice(price) {
 }
 
 function showLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'flex';
-    }
-    if (errorMessage) {
-        errorMessage.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'flex';
+    if (errorMessage) errorMessage.style.display = 'none';
 }
 
 function hideLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'none';
 }
 
 function showError(message = 'Error loading services. Please try again later.') {
@@ -195,12 +189,11 @@ function viewService(serviceId) {
     window.location.href = `./service-detail.html?id=${serviceId}`;
 }
 
+// Load locations
 async function loadLocations() {
     try {
-        const response = await fetch('./php/get-locations.php');
-        if (!response.ok) {
-            throw new Error('Failed to fetch locations');
-        }
+        const response = await fetch(`${API_BASE_URL}/php/get-locations.php`);
+        if (!response.ok) throw new Error('Failed to fetch locations');
 
         const data = await response.json();
         if (data.success) {
@@ -229,4 +222,5 @@ function getAvailabilityClass(availability) {
     if (status.includes('unavailable')) return 'status-unavailable';
     if (status.includes('coming')) return 'status-coming-soon';
     return 'status-available';
-} 
+}
+

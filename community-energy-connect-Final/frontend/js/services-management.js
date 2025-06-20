@@ -1,3 +1,6 @@
+// Backend container DNS name on Docker network
+const API_BASE_URL = "http://backend";
+
 // Services Management functionality
 document.addEventListener("DOMContentLoaded", () => {
   loadServices()
@@ -5,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Load services
 function loadServices() {
-  fetch("php/get-provider-services.php")
+  fetch(`${API_BASE_URL}/php/get-provider-services.php`)
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
@@ -68,7 +71,7 @@ function deleteService(id) {
   formData.append('action', 'delete')
   formData.append('id', id)
 
-  fetch("php/manage-services.php", {
+  fetch(`${API_BASE_URL}/php/manage-services.php`, {
     method: 'POST',
     body: formData
   })
@@ -103,3 +106,4 @@ function logout() {
     window.location.href = "index.html"
   }
 }
+

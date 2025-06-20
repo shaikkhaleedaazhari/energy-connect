@@ -50,5 +50,23 @@
 
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>
+
+    <script>
+        // This function is triggered on form submission
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent page reload
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!email || !password) {
+                alert("Please fill in both fields.");
+                return;
+            }
+
+            authManager.login(email, password); // Call method in auth.js
+        }
+    </script>
 </body>
 </html>
+
