@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-backend
+  namespace: three-tier
+  labels:
+    app: php-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: php-backend
+  ports:
+    - port: 80
+      targetPort: 80
+

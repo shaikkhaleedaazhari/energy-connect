@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-frontend
+  namespace: three-tier
+  labels:
+    app: php-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-frontend
+  template:
+    metadata:
+      labels:
+        app: php-frontend
+    spec:
+      containers:
+        - name: php-frontend
+          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/php-frontend:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+
