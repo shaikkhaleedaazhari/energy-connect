@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Provider - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Provider Details Section -->
+    <section class="provider-details-section">
+        <div class="container">
+            <div class="provider-header">
+                <div class="provider-main-info" id="providerMainInfo">
+                    <img src="/placeholder.svg?height=150&width=150" alt="Provider Logo" id="providerLogo">
+                    <div class="provider-basic-info">
+                        <h1 id="providerName">Loading...</h1>
+                        <p id="providerDescription">Loading description...</p>
+                        <div class="provider-contact-info">
+                            <div class="contact-item">
+                                <strong>Contact:</strong> <span id="contactName">Loading...</span>
+                            </div>
+                            <div class="contact-item">
+                                <strong>Email:</strong> <span id="contactEmail">Loading...</span>
+                            </div>
+                            <div class="contact-item">
+                                <strong>Phone:</strong> <span id="contactPhone">Loading...</span>
+                            </div>
+                            <div class="contact-item">
+                                <strong>Location:</strong> <span id="providerLocation">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Provider Products -->
+    <section class="provider-products-section">
+        <div class="container">
+            <h2>Products Offered</h2>
+            <div class="products-grid" id="providerProducts">
+                <!-- Provider products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Provider Services -->
+    <section class="provider-services-section">
+        <div class="container">
+            <h2>Services Offered</h2>
+            <div class="services-grid" id="providerServices">
+                <!-- Provider services will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Load provider details when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProviderDetails();
+        });
+    </script>
+</body>
+</html>

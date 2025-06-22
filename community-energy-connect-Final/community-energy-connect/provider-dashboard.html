@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Profile - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="signup.html" class="btn-signup">Sign Up</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-header">
+                <div class="profile-header-content">
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar-large">
+                            <span class="avatar-icon">🏢</span>
+                        </div>
+                        <h1>Provider Profile</h1>
+                        <p>Manage your business information and quick actions</p>
+                        <div class="profile-main-links" style="margin-top: 1.5rem; display: flex; gap: 1.5rem; justify-content: center;">
+                            <a href="services-management.html" class="btn-primary" style="padding: 10px 32px; font-size: 1.08rem;">My Services</a>
+                            <a href="products-management.html" class="btn-secondary" style="padding: 10px 32px; font-size: 1.08rem;">My Products</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-content-grid" style="display: flex; flex-wrap: wrap; gap: 2.5rem; justify-content: center; align-items: flex-start;">
+                <!-- Business Information Card -->
+                <div class="profile-card" style="flex: 1 1 350px; min-width: 340px; max-width: 420px;">
+                    <div class="card-header">
+                        <h2>Business Information</h2>
+                        <span class="card-icon">🏢</span>
+                    </div>
+                    <form id="profileUpdateForm" class="profile-form">
+                        <div class="form-group">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" name="company_name" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Contact Name</label>
+                                <input type="text" id="contactName" name="contact_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="tel" id="phoneNumber" name="phone_number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" name="location" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Business Description</label>
+                            <textarea id="description" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="services">Services Offered</label>
+                            <textarea id="services" name="services" rows="3" required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Security and Quick Actions stacked -->
+                <div style="display: flex; flex-direction: column; gap: 2rem; flex: 1 1 320px; min-width: 320px; max-width: 400px;">
+                    <div class="profile-card" style="margin-bottom: 0;">
+                        <div class="card-header">
+                            <h2>Security</h2>
+                            <span class="card-icon">🔒</span>
+                        </div>
+                        <form id="passwordChangeForm" class="profile-form">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" name="current_password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" name="new_password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" name="confirm_password" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-secondary">Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                            <span class="card-icon">⚡</span>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="add-service.html" class="action-btn">
+                                <span class="action-icon">➕</span>
+                                Add New Service
+                            </a>
+                            <a href="add-product.html" class="action-btn">
+                                <span class="action-icon">📦</span>
+                                Add New Product
+                            </a>
+                            <a href="services-management.html" class="action-btn">
+                                <span class="action-icon">📋</span>
+                                Manage Services
+                            </a>
+                            <a href="products-management.html" class="action-btn">
+                                <span class="action-icon">🛍️</span>
+                                Manage Products
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Load profile data and stats on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+        });
+    </script>
+</body>
+</html>

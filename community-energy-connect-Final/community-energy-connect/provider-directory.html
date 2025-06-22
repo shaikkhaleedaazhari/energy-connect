@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Directory - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="education.html">Resources</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="signup.html" class="btn-signup">Sign Up</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Directory Header -->
+    <section class="directory-header">
+        <div class="container">
+            <h1>Provider Directory</h1>
+            <p>Find trusted providers for renewable energy and energy efficiency services in your area.</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by service, location, or keywords" onkeyup="searchProviders()">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filters">
+                <select class="filter-select" onchange="filterProviders('service', this.value)">
+                    <option value="">Service Type</option>
+                    <option value="solar">Solar Installation</option>
+                    <option value="wind">Wind Power</option>
+                    <option value="efficiency">Energy Efficiency</option>
+                </select>
+                <select class="filter-select" onchange="filterProviders('location', this.value)">
+                    <option value="">Location</option>
+                    <option value="cityville">Cityville</option>
+                    <option value="townsville">Townsville</option>
+                    <option value="rural">Rural County</option>
+                </select>
+                <select class="filter-select" onchange="filterProviders('rating', this.value)">
+                    <option value="">Rating</option>
+                    <option value="4+">4+ Stars</option>
+                    <option value="3+">3+ Stars</option>
+                </select>
+                <select class="filter-select" onchange="filterProviders('keywords', this.value)">
+                    <option value="">Keywords</option>
+                    <option value="installation">Installation</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="consultation">Consultation</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Providers -->
+    <section class="featured-providers">
+        <div class="container">
+            <h2>Featured Providers</h2>
+            
+            <div class="provider-card" onclick="navigateToProvider(1)">
+                <img src="/placeholder.svg?height=150&width=200" alt="Solar Solutions Inc.">
+                <div class="provider-info">
+                    <h3>Solar Solutions Inc.</h3>
+                    <p>Leading provider of solar panel installation and maintenance services. Serving the greater metropolitan area.</p>
+                    <button class="view-profile-btn">View Profile</button>
+                </div>
+            </div>
+
+            <div class="provider-card" onclick="navigateToProvider(2)">
+                <img src="/placeholder.svg?height=150&width=200" alt="EcoHome Energy">
+                <div class="provider-info">
+                    <h3>EcoHome Energy</h3>
+                    <p>Specialists in energy-efficient home upgrades, including insulation, windows, and HVAC systems.</p>
+                    <button class="view-profile-btn">View Profile</button>
+                </div>
+            </div>
+
+            <div class="provider-card" onclick="navigateToProvider(3)">
+                <img src="/placeholder.svg?height=150&width=200" alt="Wind Power Now">
+                <div class="provider-info">
+                    <h3>Wind Power Now</h3>
+                    <p>Experts in residential wind turbine installations, offering sustainable energy solutions for homes.</p>
+                    <button class="view-profile-btn">View Profile</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Providers -->
+    <section class="all-providers">
+        <div class="container">
+            <h2>All Providers</h2>
+            <div class="providers-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Provider</th>
+                            <th>Services</th>
+                            <th>Location</th>
+                            <th>Rating</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Green Energy Co.</td>
+                            <td>Solar panel installation, maintenance</td>
+                            <td>Cityville</td>
+                            <td><span class="rating">4.5 stars</span></td>
+                            <td><a href="#" class="view-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Sustainable Solutions Ltd.</td>
+                            <td>Energy audits, insulation, window upgrades</td>
+                            <td>Townsville</td>
+                            <td><span class="rating">4.2 stars</span></td>
+                            <td><a href="#" class="view-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Renewable Resources Inc.</td>
+                            <td>Wind turbine installation, solar solutions</td>
+                            <td>Rural County</td>
+                            <td><span class="rating">4.8 stars</span></td>
+                            <td><a href="#" class="view-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>EcoLiving Services</td>
+                            <td>HVAC system upgrades, energy-efficient appliances</td>
+                            <td>Suburbia</td>
+                            <td><span class="rating">4.0 stars</span></td>
+                            <td><a href="#" class="view-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Clean Power Providers</td>
+                            <td>Solar water heating, energy storage solutions</td>
+                            <td>Coastal Area</td>
+                            <td><span class="rating">4.6 stars</span></td>
+                            <td><a href="#" class="view-link">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

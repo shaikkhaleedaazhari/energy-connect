@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Services - Community Energy Connect</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+      <div class="nav-container">
+          <a href="index.html" class="nav-logo">
+              <span class="logo-icon">⚡</span>
+              <span class="logo-text">Community Energy Connect</span>
+          </a>
+          <ul class="nav-menu">
+              <li><a href="index.html" class="nav-link">Home</a></li>
+              <li><a href="products.html" class="nav-link">Products</a></li>
+              <li><a href="services.html" class="nav-link active">Services</a></li>
+              <li><a href="education.html" class="nav-link">Education</a></li>
+          </ul>
+          <div class="nav-auth" id="navAuth">
+              <a href="signup.html" class="btn-signup">Sign Up</a>
+              <a href="login.html" class="btn-login">Login</a>
+          </div>
+          <div class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+          </div>
+      </div>
+  </nav>
+
+  <!-- Services Header -->
+  <section class="services-header">
+      <div class="container">
+          <h1>All Our Services</h1>
+          <p>Comprehensive renewable energy and efficiency services for your home and business.</p>
+      </div>
+  </section>
+
+  <!-- Solar Energy Services -->
+  <section class="service-category-horizontal">
+      <div class="container">
+          <h2>Solar Energy Services</h2>
+          <div class="services-horizontal-scroll">
+              <div class="service-card-horizontal" onclick="navigateToService('residential-solar-installation')">
+                  <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Residential Solar Installation">
+                  <div class="service-info-horizontal">
+                      <h3>Residential Solar Installation</h3>
+                      <p>Complete solar panel system installation for homes with professional design and installation.</p>
+                      <div class="service-price">Starting at $15,000</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('commercial-solar-installation')">
+                  <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Commercial Solar Installation">
+                  <div class="service-info-horizontal">
+                      <h3>Commercial Solar Installation</h3>
+                      <p>Large-scale solar solutions for businesses and commercial properties.</p>
+                      <div class="service-price">Starting at $50,000</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('solar-maintenance')">
+                  <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Solar Maintenance">
+                  <div class="service-info-horizontal">
+                      <h3>Solar Panel Maintenance</h3>
+                      <p>Regular maintenance and cleaning services to keep your solar panels operating efficiently.</p>
+                      <div class="service-price">Starting at $200</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Energy Efficiency Services -->
+  <section class="service-category-horizontal">
+      <div class="container">
+          <h2>Energy Efficiency Services</h2>
+          <div class="services-horizontal-scroll">
+              <div class="service-card-horizontal" onclick="navigateToService('home-energy-audit')">
+                  <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Home Energy Audit">
+                  <div class="service-info-horizontal">
+                      <h3>Home Energy Audit</h3>
+                      <p>Comprehensive assessment of your home's energy usage and efficiency opportunities.</p>
+                      <div class="service-price">Starting at $300</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('insulation-installation')">
+                  <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Insulation Installation">
+                  <div class="service-info-horizontal">
+                      <h3>Insulation Installation</h3>
+                      <p>Professional insulation services to improve your home's energy efficiency.</p>
+                      <div class="service-price">Starting at $800</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('window-upgrades')">
+                  <img src="https://images.unsplash.com/photo-1545259741-2ea3ebf61fa0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Window Upgrades">
+                  <div class="service-info-horizontal">
+                      <h3>Energy-Efficient Windows</h3>
+                      <p>Installation of energy-efficient windows to reduce heating and cooling costs.</p>
+                      <div class="service-price">Starting at $1,200</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Wind Energy Services -->
+  <section class="service-category-horizontal">
+      <div class="container">
+          <h2>Wind Energy Services</h2>
+          <div class="services-horizontal-scroll">
+              <div class="service-card-horizontal" onclick="navigateToService('residential-wind-turbine')">
+                  <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Residential Wind Turbine">
+                  <div class="service-info-horizontal">
+                      <h3>Residential Wind Turbines</h3>
+                      <p>Small-scale wind turbine installation for residential properties.</p>
+                      <div class="service-price">Starting at $8,000</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('wind-assessment')">
+                  <img src="https://images.unsplash.com/photo-1548337138-e87d889cc369?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Wind Assessment">
+                  <div class="service-info-horizontal">
+                      <h3>Wind Resource Assessment</h3>
+                      <p>Professional assessment of wind resources on your property.</p>
+                      <div class="service-price">Starting at $500</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('wind-maintenance')">
+                  <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Wind Maintenance">
+                  <div class="service-info-horizontal">
+                      <h3>Wind Turbine Maintenance</h3>
+                      <p>Regular maintenance and repair services for wind turbine systems.</p>
+                      <div class="service-price">Starting at $400</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Smart Home Services -->
+  <section class="service-category-horizontal">
+      <div class="container">
+          <h2>Smart Home Services</h2>
+          <div class="services-horizontal-scroll">
+              <div class="service-card-horizontal" onclick="navigateToService('smart-thermostat-installation')">
+                  <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Smart Thermostat Installation">
+                  <div class="service-info-horizontal">
+                      <h3>Smart Thermostat Installation</h3>
+                      <p>Professional installation and setup of smart thermostats for optimal energy control.</p>
+                      <div class="service-price">Starting at $450</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('energy-monitoring-setup')">
+                  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="Energy Monitoring Setup">
+                  <div class="service-info-horizontal">
+                      <h3>Energy Monitoring Setup</h3>
+                      <p>Installation and configuration of home energy monitoring systems.</p>
+                      <div class="service-price">Starting at $350</div>
+                  </div>
+              </div>
+              <div class="service-card-horizontal" onclick="navigateToService('led-lighting-conversion')">
+                  <img src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="LED Lighting Conversion">
+                  <div class="service-info-horizontal">
+                      <h3>LED Lighting Conversion</h3>
+                      <p>Complete conversion of your home lighting to energy-efficient LED systems.</p>
+                      <div class="service-price">Starting at $600</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Service Providers Section -->
+  <section class="service-providers-section">
+      <div class="container">
+          <h2>Our Service Providers</h2>
+          <div class="providers-simple-list" id="serviceProvidersList">
+              <div class="provider-simple-card">
+                  <h3>John Smith</h3>
+                  <p><strong>Company:</strong> Solar Solutions Inc.</p>
+                  <p><strong>Email:</strong> john@solarsolutions.com</p>
+                  <p><strong>Phone:</strong> (555) 123-4567</p>
+              </div>
+              <div class="provider-simple-card">
+                  <h3>Sarah Johnson</h3>
+                  <p><strong>Company:</strong> EcoHome Energy</p>
+                  <p><strong>Email:</strong> sarah@ecohome.com</p>
+                  <p><strong>Phone:</strong> (555) 234-5678</p>
+              </div>
+              <div class="provider-simple-card">
+                  <h3>Mike Davis</h3>
+                  <p><strong>Company:</strong> Wind Power Now</p>
+                  <p><strong>Email:</strong> mike@windpowernow.com</p>
+                  <p><strong>Phone:</strong> (555) 345-6789</p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+      <div class="container">
+          <div class="footer-links">
+              <a href="#about">About Us</a>
+              <a href="#contact">Contact</a>
+              <a href="#privacy">Privacy Policy</a>
+              <a href="#terms">Terms of Service</a>
+          </div>
+          <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+      </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

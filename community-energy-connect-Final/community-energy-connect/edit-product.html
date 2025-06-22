@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Community Energy Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Community Energy Connect</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+            </ul>
+            <div class="nav-auth" id="navAuth">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+                <a href="#" class="btn-login" id="logoutBtn">Logout</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+        </nav>
+
+    <main class="edit-page">
+        <div class="container">
+            <h1 style="text-align:center; display:flex; align-items:center; justify-content:center; gap:12px;">
+                <i class="fas fa-edit" style="color:#38bdf8;"></i>
+                Edit Product
+            </h1>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            
+            <form id="editProductForm" class="edit-form edit-form-layout">
+                <input type="hidden" id="productId" name="id">
+                
+                <div class="form-grid">
+                <div class="form-group">
+                    <label for="title">Product Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Renewable Energy Equipment">Renewable Energy Equipment</option>
+                        <option value="Energy Efficiency Appliances">Energy Efficiency Appliances</option>
+                        <option value="Home Energy Monitoring">Home Energy Monitoring</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subcategory">Product Type</label>
+                    <input type="text" id="subcategory" name="subcategory" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pricing">Price ($)</label>
+                    <input type="number" id="pricing" name="pricing" step="0.01" min="0" required>
+                </div>
+
+
+                <div class="form-group">
+                        <label for="image_url">Image URL</label>
+                        <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
+                        <small class="form-hint">Optional: Add an image URL for your product</small>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="specifications">Specifications</label>
+                    <textarea id="specifications" name="specifications" placeholder="Enter each specification on a new line" rows="4"></textarea>
+                    <small class="form-hint">Enter each specification on a new line</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='products-management.html'" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2024 Community Energy Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/edit-product.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html> 
