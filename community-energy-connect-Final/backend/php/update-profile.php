@@ -1,11 +1,28 @@
 <?php
-session_start();
+// Start session safely
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Set headers for CORS and JSON response
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Allow only POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+    exit();
+}
+
 require_once '../config/database.php';
 require_once '../config/session.php';
 
 // Check if user is logged in
 if (!isLoggedIn()) {
+    http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
 }
@@ -13,13 +30,12 @@ if (!isLoggedIn()) {
 try {
     $database = new Database();
     $db = $database->getConnection();
-    
+
     $userId = getUserId();
     $userType = getUserType();
-    
-    // For regular users, keep required fields. For providers, allow all fields to be optional.
+
     if ($userType === 'provider') {
-        // Get provider fields
+        // Provider fields
         $companyName = trim($_POST['company_name'] ?? '');
         $contactName = trim($_POST['contact_name'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -28,9 +44,9 @@ try {
         $description = trim($_POST['description'] ?? '');
         $services = trim($_POST['services'] ?? '');
 
-        // Only update fields that are set (not empty)
         $fields = [];
         $params = [];
+
         if ($companyName !== '') { $fields[] = 'company_name = ?'; $params[] = $companyName; }
         if ($contactName !== '') { $fields[] = 'contact_name = ?'; $params[] = $contactName; }
         if ($email !== '') {
@@ -38,7 +54,6 @@ try {
                 echo json_encode(['success' => false, 'message' => 'Invalid email format']);
                 exit();
             }
-            // Check if email is already taken by another user
             $stmt = $db->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
             $stmt->execute([$email, $userId]);
             if ($stmt->fetch()) {
@@ -60,13 +75,14 @@ try {
         $sql = "UPDATE service_providers SET " . implode(', ', $fields) . " WHERE user_id = ?";
         $params[] = $userId;
         $stmt = $db->prepare($sql);
-        $result = $stmt->execute($params);
+        $providerUpdated = $stmt->execute($params);
 
-        // Also update email/phone in users table if provided
+        // Update users table if email or phone is provided
         $userFields = [];
         $userParams = [];
         if ($email !== '') { $userFields[] = 'email = ?'; $userParams[] = $email; }
         if ($phone !== '') { $userFields[] = 'phone_number = ?'; $userParams[] = $phone; }
+
         if (!empty($userFields)) {
             $userSql = "UPDATE users SET " . implode(', ', $userFields) . " WHERE id = ?";
             $userParams[] = $userId;
@@ -74,22 +90,21 @@ try {
             $userStmt->execute($userParams);
         }
 
-        if ($result) {
-            // Update session user_name for provider
-            if (!empty($contactName)) {
-                $_SESSION['user_name'] = $contactName;
-                // Also update users table: set first_name = contact_name, last_name = ''
-                $stmt = $db->prepare("UPDATE users SET first_name = ?, last_name = '' WHERE id = ?");
-                $stmt->execute([$contactName, $userId]);
-            } else if (!empty($companyName)) {
-                $_SESSION['user_name'] = $companyName;
-            }
-            echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update profile']);
+        // Update session display name
+        if (!empty($contactName)) {
+            $_SESSION['user_name'] = $contactName;
+            $stmt = $db->prepare("UPDATE users SET first_name = ?, last_name = '' WHERE id = ?");
+            $stmt->execute([$contactName, $userId]);
+        } elseif (!empty($companyName)) {
+            $_SESSION['user_name'] = $companyName;
         }
+
+        echo json_encode([
+            'success' => $providerUpdated,
+            'message' => $providerUpdated ? 'Profile updated successfully' : 'Failed to update profile'
+        ]);
     } else {
-        // Regular user logic (keep required fields)
+        // Regular user
         $firstName = trim($_POST['firstName'] ?? '');
         $lastName = trim($_POST['lastName'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -99,27 +114,31 @@ try {
             echo json_encode(['success' => false, 'message' => 'Required fields cannot be empty']);
             exit();
         }
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             echo json_encode(['success' => false, 'message' => 'Invalid email format']);
             exit();
         }
+
         $stmt = $db->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
         $stmt->execute([$email, $userId]);
         if ($stmt->fetch()) {
             echo json_encode(['success' => false, 'message' => 'Email is already taken']);
             exit();
         }
+
         $stmt = $db->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ? WHERE id = ?");
         $result = $stmt->execute([$firstName, $lastName, $email, $phone, $userId]);
+
         if ($result) {
-            // Update session user_name for user
-            $_SESSION['user_name'] = $firstName . ' ' . $lastName;
+            $_SESSION['user_name'] = "$firstName $lastName";
             echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to update profile']);
         }
     }
+
 } catch (Exception $e) {
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = 'cap-three.ch2c82wwifaa.us-east-1.rds.amazonaws.com';
+    private $host = 'eks-tree-rds.ch2c82wwifaa.us-east-1.rds.amazonaws.com';
     private $db_name = 'community_energy_connect';
     private $username = 'admin';
     private $password = 'khaleeda';

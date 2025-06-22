@@ -1,5 +1,5 @@
 // Backend base URL
-const API_BASE_URL = "http://backend";
+const API_BASE_URL = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com";
 
 // Add Product functionality
 document.addEventListener("DOMContentLoaded", () => {
@@ -60,6 +60,7 @@ function handleProductSubmission(event) {
   fetch(`${API_BASE_URL}/php/manage-products.php`, {
     method: "POST",
     body: formData,
+    credentials: 'include'
   })
     .then((response) => {
       console.log("Response status:", response.status);
@@ -109,7 +110,9 @@ function handleProductSubmission(event) {
 
 // Load provider name
 function loadProviderName() {
-  fetch(`${API_BASE_URL}/php/get-profile.php`)
+  fetch(`${API_BASE_URL}/php/get-profile.php`, {
+    credentials: 'include'
+  })
     .then((response) => response.json())
     .then((data) => {
       if (data.success && data.profile) {
@@ -125,7 +128,9 @@ function loadProviderName() {
 // Logout function
 function logout() {
   if (confirm("Are you sure you want to logout?")) {
-    fetch(`${API_BASE_URL}/php/logout.php`)
+    fetch(`${API_BASE_URL}/php/logout.php`, {
+      credentials: 'include'
+    })
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.removeItem("userSession");
@@ -138,4 +143,3 @@ function logout() {
       });
   }
 }
-

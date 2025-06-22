@@ -1,5 +1,5 @@
 // User Profile Management
-const API_BASE_URL = "http://172.17.0.2";
+const API_BASE_URL = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com/php";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadUserProfile();

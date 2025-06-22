@@ -1,5 +1,9 @@
 <?php
+// CORS Headers to allow frontend access via ALB
+header("Access-Control-Allow-Origin: http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
+
 require_once '../config/database.php';
 
 try {
@@ -13,7 +17,7 @@ try {
         exit();
     }
     
-    // Get service details from the services table
+    // Get service details with provider info
     $stmt = $db->prepare("SELECT s.*, p.company_name, p.contact_name, p.phone_number, p.location 
                          FROM services s 
                          LEFT JOIN service_providers p ON s.provider_id = p.id 
@@ -26,14 +30,14 @@ try {
         exit();
     }
     
-    // Convert features from JSON string to array if it exists
+    // Decode features from JSON
     if (!empty($service['features'])) {
         $service['features'] = json_decode($service['features'], true);
     } else {
         $service['features'] = [];
     }
 
-    // Prepare provider data
+    // Extract provider info separately
     $provider = null;
     if ($service['provider_id']) {
         $provider = [
@@ -42,7 +46,6 @@ try {
             'phone_number' => $service['phone_number'],
             'location' => $service['location']
         ];
-        // Remove provider fields from service array to avoid duplication
         unset($service['company_name'], $service['contact_name'], $service['phone_number'], $service['location']);
     }
     
@@ -55,4 +58,3 @@ try {
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
 }
-?>

@@ -1,5 +1,9 @@
 <?php
+// Set proper CORS headers
+header("Access-Control-Allow-Origin: http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
+
 require_once '../config/database.php';
 
 try {
@@ -45,6 +49,7 @@ try {
         // Remove provider fields from product array to avoid duplication
         unset($product['company_name'], $product['contact_name'], $product['phone_number'], $product['location']);
     }
+
     // Ensure provider_id is included and is an integer
     $product['provider_id'] = (int)($product['provider_id'] ?? 0);
     

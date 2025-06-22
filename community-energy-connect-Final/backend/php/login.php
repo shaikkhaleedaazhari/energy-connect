@@ -1,6 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
+
 require_once '../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -12,34 +13,39 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     $database = new Database();
     $db = $database->getConnection();
-    
+
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    
-    // Validation
+
+    // Basic validation
     if (empty($email) || empty($password)) {
         echo json_encode(['success' => false, 'message' => 'Email and password are required']);
         exit();
     }
-    
-    // Get user
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid email format']);
+        exit();
+    }
+
+    // Fetch user by email
     $stmt = $db->prepare("SELECT id, first_name, last_name, email, password, user_type FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if (!$user || !password_verify($password, $user['password'])) {
         echo json_encode(['success' => false, 'message' => 'Invalid email or password']);
         exit();
     }
-    
-    // Set session
+
+    // Set session data
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_type'] = $user['user_type'];
     $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
     $_SESSION['user_email'] = $user['email'];
-    
+
     echo json_encode([
-        'success' => true, 
+        'success' => true,
         'message' => 'Login successful',
         'user' => [
             'id' => $user['id'],
@@ -48,8 +54,8 @@ try {
             'type' => $user['user_type']
         ]
     ]);
-    
+
 } catch (Exception $e) {
+    error_log("Login error: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
 }
-?>

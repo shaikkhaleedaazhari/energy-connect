@@ -1,5 +1,5 @@
 // Backend container DNS name on Docker network
-const API_BASE_URL = "http://backend";
+const API_BASE_URL = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com";
 
 document.addEventListener('DOMContentLoaded', function() {
     // Get product ID from URL parameters

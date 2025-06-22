@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: php-backend
-  namespace: three-tier
   labels:
     app: php-backend
 spec:
@@ -17,7 +16,7 @@ spec:
     spec:
       containers:
         - name: php-backend
-          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/php-backend:latest
+          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
           ports:
             - containerPort: 80
           env:
@@ -41,4 +40,3 @@ spec:
                 secretKeyRef:
                   name: rds-credentials
                   key: DB_PASS
-

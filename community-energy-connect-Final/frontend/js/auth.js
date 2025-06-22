@@ -1,7 +1,7 @@
 // Authentication and navigation management
 class AuthManager {
   constructor() {
-    this.apiBaseUrl = "http://backend"; // Backend container IP
+    this.apiBaseUrl = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com/php"; // Backend container IP
     this.init();
   }
 

@@ -1,5 +1,5 @@
 // Backend base URL
-const API_BASE_URL = "http://backend";
+const API_BASE_URL = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com";
 
 document.addEventListener('DOMContentLoaded', function () {
   const urlParams = new URLSearchParams(window.location.search);

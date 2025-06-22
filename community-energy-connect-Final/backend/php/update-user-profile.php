@@ -1,9 +1,19 @@
 <?php
-session_start();
+// CORS header for frontend domain (update if needed)
+header("Access-Control-Allow-Origin: http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
+
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Required includes
 require_once '../config/database.php';
 require_once '../config/session.php';
 
+// Session check
 if (!isLoggedIn()) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
@@ -19,16 +29,31 @@ try {
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
 
-    if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Basic validation
+    if (!$firstName || !$lastName || !$email || !$phone) {
+        echo json_encode(['success' => false, 'message' => 'All fields are required']);
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['success' => false, 'message' => 'Invalid email format']);
         exit();
     }
 
+    // Update user info
     $stmt = $db->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE id = ?");
-    $stmt->execute([$firstName, $lastName, $email, $phone, $userId]);
+    $result = $stmt->execute([$firstName, $lastName, $email, $phone, $userId]);
 
-    echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
+    if ($result) {
+        echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update profile']);
+    }
+
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Server error: ' . $e->getMessage()
+    ]);
 }
-?> 
+?>

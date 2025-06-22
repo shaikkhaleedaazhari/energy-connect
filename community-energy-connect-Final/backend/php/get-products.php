@@ -1,33 +1,35 @@
 <?php
+// Allow CORS if frontend is hosted separately
+header("Access-Control-Allow-Origin: http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-// Include database configuration
 require_once '../config/database.php';
 
 try {
     $database = new Database();
     $db = $database->getConnection();
-    
-    // Get filter parameters
-    $category = $_GET['category'] ?? '';
-    $priceRange = $_GET['priceRange'] ?? '';
-    $availability = $_GET['availability'] ?? '';
-    $search = $_GET['search'] ?? '';
-    
-    // Build the base query
+
+    // Sanitize and trim inputs
+    $category = trim($_GET['category'] ?? '');
+    $priceRange = trim($_GET['priceRange'] ?? '');
+    $availability = trim($_GET['availability'] ?? '');
+    $search = trim($_GET['search'] ?? '');
+
     $query = "SELECT p.*, sp.company_name 
               FROM products p 
               LEFT JOIN service_providers sp ON p.provider_id = sp.id 
               WHERE 1=1";
+
     $params = [];
-    
-    // Add category filter if specified
+
+    // Category filter
     if (!empty($category)) {
         $query .= " AND p.category = ?";
         $params[] = $category;
     }
-    
-    // Add price range filter if specified
+
+    // Price range filter
     if (!empty($priceRange)) {
         switch ($priceRange) {
             case '0-1000':
@@ -41,63 +43,52 @@ try {
                 break;
         }
     }
-    
-    // Add availability filter if specified
+
+    // Availability filter
     if (!empty($availability)) {
         $availability = strtolower($availability);
-        if ($availability === 'available' || $availability === 'unavailable') {
+        if (in_array($availability, ['available', 'unavailable'])) {
             $query .= " AND LOWER(p.availability) = ?";
-            $params[] = ucfirst($availability);
+            $params[] = ucfirst($availability); // 'Available' or 'Unavailable'
         }
     }
-    
-    // Add search filter if specified
+
+    // Search filter
     if (!empty($search)) {
         $query .= " AND (p.name LIKE ? OR p.description LIKE ? OR p.category LIKE ? OR p.subcategory LIKE ?)";
         $searchTerm = "%$search%";
         $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm, $searchTerm]);
     }
-    
-    // Order by most recent first
+
     $query .= " ORDER BY p.created_at DESC";
-    
-    // Prepare and execute the query
+
+    // Execute query
     $stmt = $db->prepare($query);
-    if (!$stmt->execute($params)) {
-        throw new Exception("Failed to execute query");
-    }
-    
+    $stmt->execute($params);
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     if ($products === false) {
-        throw new Exception("Failed to fetch products");
+        throw new Exception("Unable to fetch products.");
     }
-    
-    // Process the results
+
+    // Format and clean results
     foreach ($products as &$product) {
-        // Parse specifications if they exist
-        if (!empty($product['specifications'])) {
-            $product['specifications'] = json_decode($product['specifications'], true);
-        } else {
-            $product['specifications'] = [];
-        }
-        
-        // Format price to 2 decimal places
-        if (isset($product['price'])) {
-            $product['price'] = number_format((float)$product['price'], 2, '.', '');
-        }
-        
-        // Ensure image_url has a default value
-        if (empty($product['image_url'])) {
-            $product['image_url'] = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=400&q=80';
-        }
+        $product['specifications'] = !empty($product['specifications']) 
+            ? json_decode($product['specifications'], true) 
+            : [];
+
+        $product['price'] = isset($product['price']) 
+            ? number_format((float)$product['price'], 2, '.', '') 
+            : "0.00";
+
+        $product['image_url'] = $product['image_url'] ?: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=400&q=80';
     }
-    
+
     echo json_encode([
         'success' => true,
         'products' => $products
     ]);
-    
+
 } catch (Exception $e) {
     error_log("Error in get-products.php: " . $e->getMessage());
     echo json_encode([

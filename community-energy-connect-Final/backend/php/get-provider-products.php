@@ -1,6 +1,11 @@
 <?php
-session_start();
+// CORS Headers for cookie-based session sharing
+header("Access-Control-Allow-Origin: http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
+
+session_start();
+
 require_once '../config/database.php';
 require_once '../config/session.php';
 

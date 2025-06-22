@@ -1,5 +1,5 @@
-// API Base URL (backend container IP or EKS service name)
-const API_BASE_URL = "http://backend";
+// API Base URL
+const API_BASE_URL = "http://k8s-default-appingre-f839a6fdd0-522583786.us-east-1.elb.amazonaws.com";
 
 // DOM Elements
 const productsGrid = document.getElementById('productsGrid');
@@ -10,6 +10,7 @@ const priceFilter = document.getElementById('priceFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
 const applyFiltersBtn = document.getElementById('applyFilters');
 const categoryPills = document.querySelectorAll('.category-pill');
+const brandFilter = document.getElementById('brandFilter'); // optional
 
 // State
 let currentFilters = {
@@ -40,40 +41,48 @@ function setupEventListeners() {
             categoryPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             currentFilters.category = pill.dataset.category === 'all' ? '' : pill.dataset.category;
-            categoryFilter.value = currentFilters.category;
+            if (categoryFilter) categoryFilter.value = currentFilters.category;
             loadProducts();
         });
     });
 
-    applyFiltersBtn.addEventListener('click', () => {
-        currentFilters.category = categoryFilter.value;
-        currentFilters.priceRange = priceFilter.value;
-        currentFilters.availability = availabilityFilter.value;
-        loadProducts();
-    });
-
-    categoryFilter.addEventListener('change', () => {
-        currentFilters.category = categoryFilter.value;
-        categoryPills.forEach(pill => {
-            if (pill.dataset.category === categoryFilter.value || 
-                (categoryFilter.value === '' && pill.dataset.category === 'all')) {
-                pill.classList.add('active');
-            } else {
-                pill.classList.remove('active');
-            }
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', () => {
+            currentFilters.category = categoryFilter?.value || '';
+            currentFilters.priceRange = priceFilter?.value || '';
+            currentFilters.availability = availabilityFilter?.value || '';
+            loadProducts();
         });
-        loadProducts();
-    });
+    }
 
-    priceFilter.addEventListener('change', () => {
-        currentFilters.priceRange = priceFilter.value;
-        loadProducts();
-    });
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            currentFilters.category = categoryFilter.value;
+            categoryPills.forEach(pill => {
+                if (pill.dataset.category === categoryFilter.value || 
+                    (categoryFilter.value === '' && pill.dataset.category === 'all')) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadProducts();
+        });
+    }
 
-    availabilityFilter.addEventListener('change', () => {
-        currentFilters.availability = availabilityFilter.value;
-        loadProducts();
-    });
+    if (priceFilter) {
+        priceFilter.addEventListener('change', () => {
+            currentFilters.priceRange = priceFilter.value;
+            loadProducts();
+        });
+    }
+
+    if (availabilityFilter) {
+        availabilityFilter.addEventListener('change', () => {
+            currentFilters.availability = availabilityFilter.value;
+            loadProducts();
+        });
+    }
 }
 
 async function loadProducts() {
@@ -84,7 +93,9 @@ async function loadProducts() {
         if (currentFilters.priceRange) queryParams.append('priceRange', currentFilters.priceRange);
         if (currentFilters.availability) queryParams.append('availability', currentFilters.availability);
 
-        const response = await fetch(`${API_BASE_URL}/php/get-products.php?` + queryParams.toString());
+        const response = await fetch(`${API_BASE_URL}/php/get-products.php?${queryParams.toString()}`, {
+            credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -168,9 +179,12 @@ function showError(message = 'Error loading products. Please try again later.') 
 
 async function loadBrands() {
     try {
-        const response = await fetch(`${API_BASE_URL}/php/get-brands.php`);
+        const response = await fetch(`${API_BASE_URL}/php/get-brands.php`, {
+            credentials: 'include'
+        });
+
         if (!response.ok) throw new Error('Failed to load brands');
-        
+
         const data = await response.json();
         if (data.success && data.brands) {
             populateBrandFilter(data.brands);
@@ -182,11 +196,11 @@ async function loadBrands() {
 
 function populateBrandFilter(brands) {
     if (!brandFilter) return;
-    
+
     const options = brands.map(brand => 
         `<option value="${brand.value}">${brand.label}</option>`
     ).join('');
-    
+
     brandFilter.innerHTML = `
         <option value="">All Brands</option>
         ${options}
@@ -219,4 +233,3 @@ function updateProductsStatusIcon(products) {
         iconSpan.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;" title="Existing products"></i>';
     }
 }
-
