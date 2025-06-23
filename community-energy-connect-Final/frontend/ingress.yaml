@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: energy-connect-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+spec:
+  ingressClassName: alb   # ✅ ✅ ✅ VERY IMPORTANT
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-frontend-service
+                port:
+                  number: 80
+          - path: /php/
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-backend-service
+                port:
+                  number: 80

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: energy-backend
+  template:
+    metadata:
+      labels:
+        app: energy-backend
+    spec:
+      containers:
+        - name: energy-backend
+          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_HOST
+              value: eks-tree-rds.ch2c82wwifaa.us-east-1.rds.amazonaws.com
+            - name: DB_NAME
+              value: community_energy_connect
+            - name: DB_USER
+              value: admin
+            - name: DB_PASSWORD
+              value: khaleeda

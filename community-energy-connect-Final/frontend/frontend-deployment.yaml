@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-frontend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: energy-frontend
+  template:
+    metadata:
+      labels:
+        app: energy-frontend
+    spec:
+      containers:
+        - name: energy-frontend
+          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
+          ports:
+            - containerPort: 80
