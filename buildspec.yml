@@ -6,7 +6,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - docker --version
-      - IMAGE_TAG=v$CODEBUILD_BUILD_NUMBER
+      - IMAGE_TAG="v$CODEBUILD_BUILD_NUMBER"
       - echo "Image tag: $IMAGE_TAG"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com
 
