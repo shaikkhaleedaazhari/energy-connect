@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com)
+      - REPOSITORY_URI_FRONTEND=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend
+      - REPOSITORY_URI_BACKEND=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=$COMMIT_HASH
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building frontend Docker image...
+      - docker build -t $REPOSITORY_URI_FRONTEND:latest -f frontend/Dockerfile ./frontend
+      - echo Building backend Docker image...
+      - docker build -t $REPOSITORY_URI_BACKEND:latest -f backend/Dockerfile ./backend
+      - echo Pushing frontend image...
+      - docker push $REPOSITORY_URI_FRONTEND:latest
+      - echo Pushing backend image...
+      - docker push $REPOSITORY_URI_BACKEND:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Updating Kubernetes cluster...
+      - aws eks update-kubeconfig --region us-east-1 --name <YOUR_CLUSTER_NAME>
+      - kubectl apply -f k8s/frontend-deployment.yaml
+      - kubectl apply -f k8s/frontend-service.yaml
+      - kubectl apply -f k8s/backend-deployment.yaml
+      - kubectl apply -f k8s/backend-service.yaml
+      - kubectl apply -f k8s/ingress.yaml
+artifacts:
+  files:
+    - '**/*'
