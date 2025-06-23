@@ -1,49 +1,39 @@
 version: 0.2
 
-env:
-  variables:
-    ECR_REGISTRY: 038462784735.dkr.ecr.us-east-1.amazonaws.com
-    FRONTEND_IMAGE_NAME: energy-frontend
-    BACKEND_IMAGE_NAME: energy-backend
-
 phases:
-  install:
-    commands:
-      - echo "Installing prerequisites..."
-      - aws --version
-      - docker --version
-
   pre_build:
     commands:
-      - echo "Logging in to Amazon ECR..."
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - echo "Using image tag: $IMAGE_TAG"
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - docker --version
+      - IMAGE_TAG=v$CODEBUILD_BUILD_NUMBER
+      - echo "Image tag: $IMAGE_TAG"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com
 
   build:
     commands:
-      - echo "Building frontend image..."
-      - "docker build -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG ./community-energy-connect-Final/frontend"
-      - "docker tag $FRONTEND_IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$FRONTEND_IMAGE_NAME:$IMAGE_TAG"
-
-      - echo "Building backend image..."
-      - "docker build -t $BACKEND_IMAGE_NAME:$IMAGE_TAG ./community-energy-connect-Final/backend"
-      - "docker tag $BACKEND_IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$BACKEND_IMAGE_NAME:$IMAGE_TAG"
+      - echo Build started on `date`
+      - echo Building frontend Docker image...
+      - docker build -t energy-frontend:$IMAGE_TAG ./community-energy-connect-Final/frontend
+      - docker tag energy-frontend:$IMAGE_TAG 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
+      - echo Building backend Docker image...
+      - docker build -t energy-backend:$IMAGE_TAG ./community-energy-connect-Final/backend
+      - docker tag energy-backend:$IMAGE_TAG 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo "Pushing images to ECR..."
-      - "docker push $ECR_REGISTRY/$FRONTEND_IMAGE_NAME:$IMAGE_TAG"
-      - "docker push $ECR_REGISTRY/$BACKEND_IMAGE_NAME:$IMAGE_TAG"
+      - echo Pushing images to ECR...
+      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
+      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
 
-      - echo "Updating kubeconfig..."
+      - echo Updating Kubernetes deployment on EKS...
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
 
-      - echo "Updating frontend deployment image..."
-      - "kubectl set image deployment/energy-frontend-deployment energy-frontend=$ECR_REGISTRY/$FRONTEND_IMAGE_NAME:$IMAGE_TAG"
+      - echo Patching frontend deployment with new image...
+      - kubectl set image deployment/frontend-deployment frontend-container=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
 
-      - echo "Updating backend deployment image..."
-      - "kubectl set image deployment/energy-backend-deployment energy-backend=$ECR_REGISTRY/$BACKEND_IMAGE_NAME:$IMAGE_TAG"
+      - echo Patching backend deployment with new image...
+      - kubectl set image deployment/backend-deployment backend-container=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
 
 artifacts:
   files:
