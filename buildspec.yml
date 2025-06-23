@@ -23,17 +23,17 @@ phases:
       - echo Pushing images to ECR...
       - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
       - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
-      - echo Updating Kubernetes config...
+      - echo Updating Kubernetes deployment on EKS...
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
-      - echo Copying Kubernetes manifests to root...
+      - echo Copying all Kubernetes YAML files to root...
       - cp community-energy-connect-Final/k8s/*.yaml .
-      - echo Final files in root:
+      - echo "Final root directory content:"
       - ls -lh
 
 artifacts:
   files:
     - backend-deployment.yaml
-    - backend-service.yaml
+    - backend-service.yaml     # ✅ ADD THIS
     - frontend-deployment.yaml
-    - frontend-service.yaml
+    - frontend-service.yaml    # ✅ ADD THIS
     - ingress.yaml
