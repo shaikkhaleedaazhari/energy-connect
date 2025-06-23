@@ -17,7 +17,7 @@ phases:
     commands:
       - echo "Logging in to Amazon ECR..."
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:7}
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - echo "Using image tag: $IMAGE_TAG"
 
   build:
@@ -36,9 +36,13 @@ phases:
       - "docker push $ECR_REGISTRY/$FRONTEND_IMAGE_NAME:$IMAGE_TAG"
       - "docker push $ECR_REGISTRY/$BACKEND_IMAGE_NAME:$IMAGE_TAG"
 
-      - echo "Updating Kubernetes deployments on EKS..."
+      - echo "Updating kubeconfig..."
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
+
+      - echo "Updating frontend deployment image..."
       - "kubectl set image deployment/energy-frontend-deployment energy-frontend=$ECR_REGISTRY/$FRONTEND_IMAGE_NAME:$IMAGE_TAG"
+
+      - echo "Updating backend deployment image..."
       - "kubectl set image deployment/energy-backend-deployment energy-backend=$ECR_REGISTRY/$BACKEND_IMAGE_NAME:$IMAGE_TAG"
 
 artifacts:
