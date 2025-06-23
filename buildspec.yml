@@ -1,39 +1,45 @@
 version: 0.2
-
+ 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
       - docker --version
-      - aws sts get-caller-identity  # debug
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com
-
+ 
   build:
     commands:
       - echo Build started on `date`
       - echo Building frontend Docker image...
       - docker build -t energy-frontend:latest ./community-energy-connect-Final/frontend
       - docker tag energy-frontend:latest 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
+ 
       - echo Building backend Docker image...
       - docker build -t energy-backend:latest ./community-energy-connect-Final/backend
       - docker tag energy-backend:latest 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
-
+ 
   post_build:
     commands:
       - echo Pushing images to ECR...
       - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
       - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
+ 
       - echo Updating Kubernetes deployment on EKS...
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
-      - aws sts get-caller-identity  # debug — verify it sees the same CodeBuild role
-      - kubectl get nodes  # sanity check
-      - cp community-energy-connect-Final/k8s/*.yaml .
+ 
+      - echo Copying Kubernetes YAMLs to root for CodePipeline...
+      - cp community-energy-connect-Final/k8s/backend-deployment.yaml .
+      - cp community-energy-connect-Final/k8s/backend-service.yaml .
+      - cp community-energy-connect-Final/k8s/frontend-deployment.yaml .
+      - cp community-energy-connect-Final/k8s/frontend-service.yaml .
+ 
+      # Check & copy ingress.yaml only if not already in root
+      - if [ "$(dirname community-energy-connect-Final/k8s/ingress.yaml)" != "." ]; then cp community-energy-connect-Final/k8s/ingress.yaml .; else echo "ingress.yaml already in root, skipping copy"; fi
+ 
       - echo "Final root directory content:"
       - ls -lh
-      - echo Applying manifests...
-      - kubectl apply -f backend-deployment.yaml -f backend-service.yaml -f frontend-deployment.yaml -f frontend-service.yaml -f ingress.yaml
-
+ 
 artifacts:
   files:
     - backend-deployment.yaml
