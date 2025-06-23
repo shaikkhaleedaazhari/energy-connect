@@ -26,3 +26,17 @@ spec:
               value: admin
             - name: DB_PASSWORD
               value: khaleeda
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: energy-backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: energy-backend
+  ports:
+    - port: 80
+      targetPort: 80
+
+

@@ -1,10 +1,18 @@
 <?php
 class Database {
-    private $host = 'eks-tree-rds.ch2c82wwifaa.us-east-1.rds.amazonaws.com';
-    private $db_name = 'community_energy_connect';
-    private $username = 'admin';
-    private $password = 'khaleeda';
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     public $conn;
+
+    public function __construct() {
+        // ✅ Fetch from environment variables
+        $this->host = getenv('DB_HOST');
+        $this->db_name = getenv('DB_NAME');
+        $this->username = getenv('DB_USER');
+        $this->password = getenv('DB_PASSWORD');
+    }
 
     public function getConnection() {
         $this->conn = null;
