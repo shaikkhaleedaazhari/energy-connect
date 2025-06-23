@@ -6,6 +6,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - docker --version
+      - aws sts get-caller-identity  # debug
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com
 
   build:
@@ -25,15 +26,18 @@ phases:
       - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
       - echo Updating Kubernetes deployment on EKS...
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
-      - echo Copying all Kubernetes YAML files to root...
+      - aws sts get-caller-identity  # debug — verify it sees the same CodeBuild role
+      - kubectl get nodes  # sanity check
       - cp community-energy-connect-Final/k8s/*.yaml .
       - echo "Final root directory content:"
       - ls -lh
+      - echo Applying manifests...
+      - kubectl apply -f backend-deployment.yaml -f backend-service.yaml -f frontend-deployment.yaml -f frontend-service.yaml -f ingress.yaml
 
 artifacts:
   files:
     - backend-deployment.yaml
-    - backend-service.yaml     # ✅ ADD THIS
+    - backend-service.yaml
     - frontend-deployment.yaml
-    - frontend-service.yaml    # ✅ ADD THIS
+    - frontend-service.yaml
     - ingress.yaml
