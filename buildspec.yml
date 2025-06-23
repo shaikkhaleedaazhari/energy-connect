@@ -6,35 +6,44 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - docker --version
-      - IMAGE_TAG="v$CODEBUILD_BUILD_NUMBER"
-      - echo "Image tag: $IMAGE_TAG"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-1.amazonaws.com
 
   build:
     commands:
       - echo Build started on `date`
       - echo Building frontend Docker image...
-      - docker build -t energy-frontend:$IMAGE_TAG ./community-energy-connect-Final/frontend
-      - docker tag energy-frontend:$IMAGE_TAG 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
+      - docker build -t energy-frontend:latest ./community-energy-connect-Final/frontend
+      - docker tag energy-frontend:latest 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
+
       - echo Building backend Docker image...
-      - docker build -t energy-backend:$IMAGE_TAG ./community-energy-connect-Final/backend
-      - docker tag energy-backend:$IMAGE_TAG 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
+      - docker build -t energy-backend:latest ./community-energy-connect-Final/backend
+      - docker tag energy-backend:latest 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
 
   post_build:
     commands:
       - echo Pushing images to ECR...
-      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
-      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
+      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:latest
+      - docker push 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
 
       - echo Updating Kubernetes deployment on EKS...
       - aws eks update-kubeconfig --region us-east-1 --name MyRenamedEKSCluster
 
-      - echo Patching frontend deployment with new image...
-      - kubectl set image deployment/frontend-deployment frontend-container=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-frontend:$IMAGE_TAG
+      - echo Copying Kubernetes YAMLs to root for CodePipeline...
+      - cp community-energy-connect-Final/k8s/backend-deployment.yaml .
+      - cp community-energy-connect-Final/k8s/backend-service.yaml .
+      - cp community-energy-connect-Final/k8s/frontend-deployment.yaml .
+      - cp community-energy-connect-Final/k8s/frontend-service.yaml .
 
-      - echo Patching backend deployment with new image...
-      - kubectl set image deployment/backend-deployment backend-container=038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:$IMAGE_TAG
+      # Check & copy ingress.yaml only if not already in root
+      - if [ "$(dirname community-energy-connect-Final/k8s/ingress.yaml)" != "." ]; then cp community-energy-connect-Final/k8s/ingress.yaml .; else echo "ingress.yaml already in root, skipping copy"; fi
+
+      - echo "Final root directory content:"
+      - ls -lh
 
 artifacts:
   files:
-    - community-energy-connect-Final/k8s/*.yaml
+    - backend-deployment.yaml
+    - backend-service.yaml
+    - frontend-deployment.yaml
+    - frontend-service.yaml
+    - ingress.yaml
