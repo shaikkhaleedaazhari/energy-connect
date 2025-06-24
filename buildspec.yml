@@ -42,6 +42,6 @@ phases:
 
 artifacts:
   files:
-    - backend-deployment1.yaml
-    - frontend-deployment1.yaml
+    - backend-deployment.yaml
+    - frontend-deployment.yaml
     - ingress.yaml
