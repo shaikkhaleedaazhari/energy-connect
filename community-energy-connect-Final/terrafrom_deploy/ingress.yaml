@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: energy-connect-ingress
+  annotations:
+    # Use ALB (AWS Load Balancer Controller)
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    # Optional: group all rules under one ALB if you plan to have multiple ingresses
+    alb.ingress.kubernetes.io/group.name: energy-connect-group
+spec:
+  ingressClassName: alb  # ✅ Matches your ALB ingress controller
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-frontend-service
+                port:
+                  number: 80
+          - path: /php/
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-backend-service
+                port:
+                  number: 80
