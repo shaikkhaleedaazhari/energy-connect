@@ -29,10 +29,8 @@ phases:
       - aws eks update-kubeconfig --region us-east-2 --name MyRenamedEKSCluster
  
       - echo Copying Kubernetes YAMLs to root for CodePipeline...
-      - cp community-energy-connect-Final/k8s/backend-deployment.yaml .
-      - cp community-energy-connect-Final/k8s/backend-service.yaml .
-      - cp community-energy-connect-Final/k8s/frontend-deployment.yaml .
-      - cp community-energy-connect-Final/k8s/frontend-service.yaml .
+      - cp community-energy-connect-Final/k8s/backend-deployment1.yaml .
+      - cp community-energy-connect-Final/k8s/frontend-deployment1.yaml .
  
       # Check & copy ingress.yaml only if not already in root
       - if [ "$(dirname community-energy-connect-Final/k8s/ingress.yaml)" != "." ]; then cp community-energy-connect-Final/k8s/ingress.yaml .; else echo "ingress.yaml already in root, skipping copy"; fi
