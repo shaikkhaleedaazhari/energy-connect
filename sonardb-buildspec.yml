@@ -1,0 +1,64 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo Installing SonarQube Scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner.zip -d sonar
+      - export PATH="$PATH:$(pwd)/sonar/sonar-scanner-5.0.1.3006-linux/bin"
+      - echo 'SonarQube Scanner installed.'
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - docker --version
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-2.amazonaws.com
+
+      - echo Running SonarQube scan...
+      - cd community-energy-connect-Final
+      - |
+        sonar-scanner \
+          -Dsonar.projectKey=Energy-connect \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=http://54.145.77.226 \
+          -Dsonar.login=sqp_88c08b1feb9cfb314073f3df631384557460a78f
+      - cd ..
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building frontend Docker image...
+      - docker build -t energy-frontend:latest ./community-energy-connect-Final/frontend
+      - docker tag energy-frontend:latest 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-frontend-v2
+
+      - echo Building backend Docker image...
+      - docker build -t energy-backend:latest ./community-energy-connect-Final/backend
+      - docker tag energy-backend:latest 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-backend-v2
+
+  post_build:
+    commands:
+      - echo Pushing images to ECR...
+      - docker push 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-frontend-v2
+      - docker push 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-backend-v2
+
+      - echo Updating Kubernetes deployment on EKS...
+      - aws eks update-kubeconfig --region us-east-2 --name MyRenamedEKSCluster
+
+      - echo Copying Kubernetes YAMLs to root for CodePipeline...
+      - cp community-energy-connect-Final/cloudformation_infra/backend-deployment.yaml .
+      - cp community-energy-connect-Final/cloudformation_infra/frontend-deployment.yaml .
+
+      - if [ "$(dirname community-energy-connect-Final/cloudformation_infra/ingress.yaml)" != "." ]; then cp community-energy-connect-Final/cloudformation_infra/ingress.yaml .; else echo "ingress.yaml already in root, skipping copy"; fi
+
+      - echo "Final root directory content:"
+      - ls -lh
+
+artifacts:
+  files:
+    - backend-deployment.yaml
+    - frontend-deployment.yaml
+    - ingress.yaml
