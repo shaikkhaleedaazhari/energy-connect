@@ -4,7 +4,6 @@ phases:
   install:
     runtime-versions:
       java: corretto11
-      docker: 20
     commands:
       - echo Installing SonarQube Scanner...
       - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
