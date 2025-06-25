@@ -4,7 +4,9 @@ phases:
   install:
     runtime-versions:
       java: corretto11
-    commands:
+    commands:      
+      - echo Logging in to Docker Hub...
+      - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
       - echo Installing SonarQube Scanner...
       - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner.zip -d sonar
