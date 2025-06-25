@@ -1,6 +1,17 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      java: corretto11
+      docker: 20
+    commands:
+      - echo Installing SonarQube Scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner.zip -d sonar
+      - export PATH="$PATH:$(pwd)/sonar/sonar-scanner-5.0.1.3006-linux/bin"
+      - echo 'SonarQube Scanner installed.'
+
   pre_build:
     commands:
       - echo Logging in to Docker Hub...
@@ -10,6 +21,15 @@ phases:
       - aws --version
       - docker --version
       - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 038462784735.dkr.ecr.us-east-2.amazonaws.com
+
+      - echo Running SonarQube scan...
+      - cd community-energy-connect-Final
+      - sonar-scanner \
+          -Dsonar.projectKey=Energy-connect \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=http://54.145.77.226 \
+          -Dsonar.login=sqp_88c08b1feb9cfb314073f3df631384557460a78f
+      - cd ..
 
   build:
     commands:
