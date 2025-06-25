@@ -1,0 +1,91 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: us-east-2
+    ECR_ACCOUNT_ID: 038462784735
+    BACKEND_IMAGE_NAME: energy-backend-v2
+    FRONTEND_IMAGE_NAME: energy-frontend-v2
+    SONAR_HOST_URL: http://54.145.77.226
+    SONAR_TOKEN: sqp_88c08b1feb9cfb314073f3df631384557460a78f
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo "Installing jq if missing..."
+      - if command -v yum >/dev/null 2>&1; then yum install -y jq; fi
+      - if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get install -y jq; fi
+
+      - echo "Installing Trivy..."
+      - apt-get install -y wget apt-transport-https gnupg lsb-release
+      - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | tee /usr/share/keyrings/trivy.gpg > /dev/null
+      - echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list
+      - apt-get update
+      - apt-get install -y trivy
+
+      - echo "Installing SonarQube Scanner..."
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner.zip -d sonar
+      - export PATH="$PATH:$(pwd)/sonar/sonar-scanner-5.0.1.3006-linux/bin"
+
+      - echo Logging in to Docker Hub...
+      - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - docker --version
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+  pre_build:
+    commands:
+      - echo "Running SonarQube scan..."
+      - cd community-energy-connect-Final
+      - |
+        sonar-scanner \
+          -Dsonar.projectKey=Energy-connect \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=$SONAR_HOST_URL \
+          -Dsonar.login=$SONAR_TOKEN
+      - cd ..
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building frontend Docker image...
+      - docker build -t $FRONTEND_IMAGE_NAME:latest ./community-energy-connect-Final/frontend
+      - docker tag $FRONTEND_IMAGE_NAME:latest $ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$FRONTEND_IMAGE_NAME
+
+      - echo Building backend Docker image...
+      - docker build -t $BACKEND_IMAGE_NAME:latest ./community-energy-connect-Final/backend
+      - docker tag $BACKEND_IMAGE_NAME:latest $ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$BACKEND_IMAGE_NAME
+
+      - echo Running Trivy scan on backend image...
+      - trivy image --severity HIGH,CRITICAL $BACKEND_IMAGE_NAME:latest || echo "Vulnerabilities found in backend image"
+
+      - echo Running Trivy scan on frontend image...
+      - trivy image --severity HIGH,CRITICAL $FRONTEND_IMAGE_NAME:latest || echo "Vulnerabilities found in frontend image"
+
+  post_build:
+    commands:
+      - echo Pushing images to ECR...
+      - docker push $ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$FRONTEND_IMAGE_NAME
+      - docker push $ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$BACKEND_IMAGE_NAME
+
+      - echo Updating Kubernetes deployment on EKS...
+      - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name MyRenamedEKSCluster
+
+      - echo Copying Kubernetes YAMLs to root for CodePipeline...
+      - cp community-energy-connect-Final/cloudformation_infra/backend-deployment.yaml . || echo "Missing backend-deployment.yaml"
+      - cp community-energy-connect-Final/cloudformation_infra/frontend-deployment.yaml . || echo "Missing frontend-deployment.yaml"
+      - cp community-energy-connect-Final/cloudformation_infra/ingress.yaml . || echo "ingress.yaml already in root or missing"
+
+      - echo "Final workspace content:"
+      - ls -lh
+
+artifacts:
+  files:
+    - backend-deployment.yaml
+    - frontend-deployment.yaml
+    - ingress.yaml
