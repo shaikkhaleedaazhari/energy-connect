@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: energy-backend
-          image: 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-backend-v2:latest
+          image: 038462784735.dkr.ecr.us-east-1.amazonaws.com/energy-backend:latest
           ports:
             - containerPort: 80
           env:
