@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: energy-frontend
-          image: 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-frontend-v2
+          image: 038462784735.dkr.ecr.us-east-2.amazonaws.com/energy-frontend-v2:latest
           ports:
             - containerPort: 80
 ---
