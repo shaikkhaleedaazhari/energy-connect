@@ -7,6 +7,7 @@ const priceFilter = document.getElementById('priceFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
 const applyFiltersBtn = document.getElementById('applyFilters');
 const categoryPills = document.querySelectorAll('.category-pill');
+const brandFilter = document.getElementById('brandFilter'); // ✅ Added missing reference
 
 // State
 let currentFilters = {
@@ -38,43 +39,50 @@ function setupEventListeners() {
             categoryPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             currentFilters.category = pill.dataset.category === 'all' ? '' : pill.dataset.category;
-            categoryFilter.value = currentFilters.category; // Sync with dropdown
+            categoryFilter.value = currentFilters.category;
             loadProducts();
         });
     });
 
-    // Apply filters button click handler
-    applyFiltersBtn.addEventListener('click', () => {
-        currentFilters.category = categoryFilter.value;
-        currentFilters.priceRange = priceFilter.value;
-        currentFilters.availability = availabilityFilter.value;
-        loadProducts();
-    });
+    // Apply filters button click handler (✅ Safe check added)
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', () => {
+            currentFilters.category = categoryFilter.value;
+            currentFilters.priceRange = priceFilter.value;
+            currentFilters.availability = availabilityFilter.value;
+            loadProducts();
+        });
+    }
 
     // Individual filter change handlers
-    categoryFilter.addEventListener('change', () => {
-        currentFilters.category = categoryFilter.value;
-        // Update active pill
-        categoryPills.forEach(pill => {
-            if (pill.dataset.category === categoryFilter.value || 
-                (categoryFilter.value === '' && pill.dataset.category === 'all')) {
-                pill.classList.add('active');
-            } else {
-                pill.classList.remove('active');
-            }
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            currentFilters.category = categoryFilter.value;
+            categoryPills.forEach(pill => {
+                if (pill.dataset.category === categoryFilter.value ||
+                    (categoryFilter.value === '' && pill.dataset.category === 'all')) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadProducts();
         });
-        loadProducts();
-    });
+    }
 
-    priceFilter.addEventListener('change', () => {
-        currentFilters.priceRange = priceFilter.value;
-        loadProducts();
-    });
+    if (priceFilter) {
+        priceFilter.addEventListener('change', () => {
+            currentFilters.priceRange = priceFilter.value;
+            loadProducts();
+        });
+    }
 
-    availabilityFilter.addEventListener('change', () => {
-        currentFilters.availability = availabilityFilter.value;
-        loadProducts();
-    });
+    if (availabilityFilter) {
+        availabilityFilter.addEventListener('change', () => {
+            currentFilters.availability = availabilityFilter.value;
+            loadProducts();
+        });
+    }
 }
 
 // Functions
@@ -82,14 +90,13 @@ async function loadProducts() {
     try {
         showLoading();
         const queryParams = new URLSearchParams();
-        
-        // Only add non-empty filters to the query
+
         if (currentFilters.category) queryParams.append('category', currentFilters.category);
         if (currentFilters.priceRange) queryParams.append('priceRange', currentFilters.priceRange);
         if (currentFilters.availability) queryParams.append('availability', currentFilters.availability);
-        
+
         const response = await fetch('./php/get-products.php?' + queryParams.toString());
-        
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -155,18 +162,12 @@ function formatPrice(price) {
 }
 
 function showLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'flex';
-    }
-    if (errorMessage) {
-        errorMessage.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'flex';
+    if (errorMessage) errorMessage.style.display = 'none';
 }
 
 function hideLoading() {
-    if (loadingSpinner) {
-        loadingSpinner.style.display = 'none';
-    }
+    if (loadingSpinner) loadingSpinner.style.display = 'none';
 }
 
 function showError(message = 'Error loading products. Please try again later.') {
@@ -180,7 +181,7 @@ async function loadBrands() {
     try {
         const response = await fetch('./php/get-brands.php');
         if (!response.ok) throw new Error('Failed to load brands');
-        
+
         const data = await response.json();
         if (data.success && data.brands) {
             populateBrandFilter(data.brands);
@@ -192,11 +193,11 @@ async function loadBrands() {
 
 function populateBrandFilter(brands) {
     if (!brandFilter) return;
-    
-    const options = brands.map(brand => 
+
+    const options = brands.map(brand =>
         `<option value="${brand.value}">${brand.label}</option>`
     ).join('');
-    
+
     brandFilter.innerHTML = `
         <option value="">All Brands</option>
         ${options}
@@ -228,4 +229,4 @@ function updateProductsStatusIcon(products) {
     } else {
         iconSpan.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;" title="Existing products"></i>';
     }
-} 
+}
