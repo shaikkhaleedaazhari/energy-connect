@@ -58,7 +58,6 @@ backend/
    DB_NAME=community_energy
    DB_USER=admin
    DB_PASS=supersecret
-   DB_CHARSET=utf8mb4
    ```
 2. **(Optional) PHP Config File**
    Alternatively, open `config/database.php` and update the values:
@@ -70,7 +69,6 @@ backend/
        'database' => getenv('DB_NAME')     ?: 'community_energy',
        'username' => getenv('DB_USER')     ?: 'admin',
        'password' => getenv('DB_PASS')     ?: 'supersecret',
-       'charset'  => getenv('DB_CHARSET')  ?: 'utf8mb4',
        'options'  => [
            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
